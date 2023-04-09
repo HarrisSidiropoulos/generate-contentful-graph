@@ -105,3 +105,6 @@ dist
 
 # Diagram
 diagram.svg
+
+# env
+.env

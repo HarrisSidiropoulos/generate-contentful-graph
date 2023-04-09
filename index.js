@@ -3,12 +3,15 @@
 import assert from 'node:assert/strict';
 import contentful from "contentful";
 import graphviz from "graphviz";
+import * as dotenv from 'dotenv';
 
-const { SPACE_ID = '', ENVIRONMENT_ID = '', ACCESS_TOKEN = '' } = process.env;
+dotenv.config();
+
+const { SPACE_ID = '', ENVIRONMENT = '', CONTENT_DELIVERY_ACCESS_TOKEN = '' } = process.env;
 
 assert(SPACE_ID, "Contentful SPACE_ID is required");
-assert(ENVIRONMENT_ID, "Contentful ENVIRONMENT_ID is required");
-assert(ACCESS_TOKEN, "Contentful content delivery ACCESS_TOKEN is required");
+assert(ENVIRONMENT, "Contentful ENVIRONMENT is required");
+assert(CONTENT_DELIVERY_ACCESS_TOKEN, "Contentful CONTENT_DELIVERY_ACCESS_TOKEN is required");
 
 function generateColor() {
   const letters = "0123456789ABCDEF";
@@ -63,8 +66,8 @@ function extractLinks(contentType, items, links = [], visited = new Set()) {
 async function fetchContentTypes() {
   const client = contentful.createClient({
     space: SPACE_ID,
-    environment: ENVIRONMENT_ID,
-    accessToken: ACCESS_TOKEN,
+    environment: ENVIRONMENT,
+    accessToken: CONTENT_DELIVERY_ACCESS_TOKEN,
   });
 
   const contentTypes = await client.getContentTypes();
