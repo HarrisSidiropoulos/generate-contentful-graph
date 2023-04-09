@@ -1,6 +1,6 @@
 {
   "name": "generate-contentful-graph",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Contentful Content Type Dependency Graph",
   "main": "index.js",
   "repository": {
@@ -11,7 +11,7 @@
     "generate-contentful-graph": "index.js"
   },
   "scripts": {
-    "start": "node index.js | dot -Tsvg -o diagram.svg",
+    "start": "node index.js | dot -Tsvg -o graph.svg",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "type": "module",

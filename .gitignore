@@ -104,7 +104,7 @@ dist
 .tern-port
 
 # Diagram
-diagram.svg
+graph.svg
 
 # env
 .env

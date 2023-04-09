@@ -13,13 +13,11 @@ assert(SPACE_ID, "Contentful SPACE_ID is required");
 assert(ENVIRONMENT, "Contentful ENVIRONMENT is required");
 assert(CONTENT_DELIVERY_ACCESS_TOKEN, "Contentful CONTENT_DELIVERY_ACCESS_TOKEN is required");
 
-function generateColor() {
-  const letters = "0123456789ABCDEF";
-  let color = "#";
-  for (let i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-  return color;
+function generateColor(index = 0) {
+  const colors = [
+    '#e6194B', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#42d4f4', '#f032e6', '#bfef45', '#fabebe', '#469990', '#e6beff', '#9A6324', '#fffac8', '#800000', '#aaffc3', '#808000', '#ffd8b1', '#000075', '#a9a9a9',
+  ];
+  return colors[index % colors.length];
 }
 
 function extractLinks(contentType, items, links = [], visited = new Set()) {
@@ -85,7 +83,7 @@ async function fetchContentTypes() {
   return { contentTypes: items, links };
 }
 
-function createDiagram(data, output) {
+function createDiagram(data) {
   const { contentTypes, links } = data;
 
   // Create a new directed graph
@@ -100,13 +98,13 @@ function createDiagram(data, output) {
     g.addNode(contentType.sys.id, { label: contentType.name });
     contentType.fields.forEach((field) => {
       const fieldId = `${contentType.sys.id}.${field.id}`;
-      fieldColors.set(fieldId, generateColor());
+      fieldColors.set(fieldId, generateColor(fieldColors.size));
     });
   });
 
   // Add content type nodes
   contentTypes.forEach((contentType) => {
-    const label = `${contentType.name}\n${contentType.fields
+    const label = `${contentType.name}\n ${'-'.repeat(contentType.name.length)} \n${contentType.fields
       .map((field) => `${field.id} (${field.type})`)
       .join("\n")}`;
 
@@ -123,6 +121,7 @@ function createDiagram(data, output) {
       const fieldLabel = link.fieldName;
       g.addEdge(link.source, link.target, {
         color,
+        fontsize: 8,
         label: fieldLabel,
         samehead: true,
       });
