@@ -1,8 +1,12 @@
 {
   "name": "generate-contentful-graph",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Contentful Content Type Dependency Graph",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HarrisSidiropoulos/generate-contentful-graph.git"
+  },
   "bin": {
     "generate-contentful-graph": "index.js"
   },
