@@ -1,0 +1,25 @@
+{
+  "name": "generate-contentful-graph",
+  "version": "1.0.0",
+  "description": "Contentful Content Type Dependency Graph",
+  "main": "index.js",
+  "bin": {
+    "generate-contentful-graph": "index.js"
+  },
+  "scripts": {
+    "start": "node index.js | dot -Tsvg -o diagram.svg",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module",
+  "keywords": [
+    "contentful",
+    "graph",
+    "diagram"
+  ],
+  "author": "Harris Sidiropoulos",
+  "license": "ISC",
+  "dependencies": {
+    "contentful": "^9.3.5",
+    "graphviz": "^0.0.9"
+  }
+}
