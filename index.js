@@ -55,7 +55,13 @@ function extractLinks(contentType, items, links = [], visited = new Set()) {
 
   linkedContentTypes.forEach((link) => {
     const targetContentType = items.find((item) => item.sys.id === link.target);
+    if (!targetContentType) {
+      console.log(`Could not find content type ${link.target}`);
+      return;
+    }
+    
     extractLinks(targetContentType, items, links, visited);
+    
   });
 
   return links;
