@@ -1,21 +1,47 @@
 #!/usr/bin/env node
 
-import assert from 'node:assert/strict';
+import assert from "node:assert/strict";
 import contentful from "contentful";
 import graphviz from "graphviz";
-import * as dotenv from 'dotenv';
+import * as dotenv from "dotenv";
 
 dotenv.config();
 
-const { SPACE_ID = '', ENVIRONMENT = '', CONTENT_DELIVERY_ACCESS_TOKEN = '' } = process.env;
+const {
+  SPACE_ID = "",
+  ENVIRONMENT = "",
+  CONTENT_DELIVERY_ACCESS_TOKEN = "",
+} = process.env;
 
 assert(SPACE_ID, "Contentful SPACE_ID is required");
 assert(ENVIRONMENT, "Contentful ENVIRONMENT is required");
-assert(CONTENT_DELIVERY_ACCESS_TOKEN, "Contentful CONTENT_DELIVERY_ACCESS_TOKEN is required");
+assert(
+  CONTENT_DELIVERY_ACCESS_TOKEN,
+  "Contentful CONTENT_DELIVERY_ACCESS_TOKEN is required"
+);
 
 function generateColor(index = 0) {
   const colors = [
-    '#e6194B', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#42d4f4', '#f032e6', '#bfef45', '#fabebe', '#469990', '#e6beff', '#9A6324', '#fffac8', '#800000', '#aaffc3', '#808000', '#ffd8b1', '#000075', '#a9a9a9',
+    "#e6194B",
+    "#3cb44b",
+    "#ffe119",
+    "#4363d8",
+    "#f58231",
+    "#911eb4",
+    "#42d4f4",
+    "#f032e6",
+    "#bfef45",
+    "#fabebe",
+    "#469990",
+    "#e6beff",
+    "#9A6324",
+    "#fffac8",
+    "#800000",
+    "#aaffc3",
+    "#808000",
+    "#ffd8b1",
+    "#000075",
+    "#a9a9a9",
   ];
   return colors[index % colors.length];
 }
@@ -32,14 +58,14 @@ function extractLinks(contentType, items, links = [], visited = new Set()) {
       if (field.type === "Link" && field.linkType === "Entry") {
         return {
           source: contentType.sys.id,
-          target: field.validations.find((v) => v.linkContentType)
+          target: field.validations?.find((v) => v.linkContentType)
             ?.linkContentType[0],
           fieldId: field.id,
           fieldName: field.name,
         };
       } else if (field.type === "Array" && field.items.linkType === "Entry") {
         return field.items.validations
-          .find((v) => v.linkContentType)
+          ?.find((v) => v.linkContentType)
           .linkContentType.map((target) => ({
             source: contentType.sys.id,
             target,
@@ -59,9 +85,8 @@ function extractLinks(contentType, items, links = [], visited = new Set()) {
       console.log(`Could not find content type ${link.target}`);
       return;
     }
-    
+
     extractLinks(targetContentType, items, links, visited);
-    
   });
 
   return links;
@@ -110,7 +135,9 @@ function createDiagram(data) {
 
   // Add content type nodes
   contentTypes.forEach((contentType) => {
-    const label = `${contentType.name}\n ${'-'.repeat(contentType.name.length)} \n${contentType.fields
+    const label = `${contentType.name}\n ${"-".repeat(
+      contentType.name.length
+    )} \n${contentType.fields
       .map((field) => `${field.id} (${field.type})`)
       .join("\n")}`;
 
