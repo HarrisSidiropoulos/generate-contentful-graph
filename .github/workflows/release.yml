@@ -44,13 +44,15 @@ jobs:
           fi
 
           # Major bump if feat! or fix! (with optional scope) OR if body contains BREAKING CHANGE:
-          if [[ "$SUBJECT" =~ ^(feat|fix)(\([^)]+\))?! ]]; then
+          if echo "$SUBJECT" | grep -Eq '^(feat|fix)(\([^)]+\))?!'; then
+            BUMP="major"
+          elif [[ "$SUBJECT" == feat!* || "$SUBJECT" == fix!* ]]; then
             BUMP="major"
           elif grep -q "^BREAKING CHANGE:" <<< "$COMMIT_RAW"; then
             BUMP="major"
-          elif [[ "$SUBJECT" =~ ^feat ]]; then
+          elif [[ "$SUBJECT" == feat* ]]; then
             BUMP="minor"
-          elif [[ "$SUBJECT" =~ ^fix ]]; then
+          elif [[ "$SUBJECT" == fix* ]]; then
             BUMP="patch"
           else
             echo "No semantic release trigger found (feat, fix, feat!, fix!, BREAKING CHANGE). Skipping release."
