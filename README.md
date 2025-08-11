@@ -53,34 +53,3 @@ chore: update docs                =>  no release
 Commit body including:
 BREAKING CHANGE: output format changed => major
 ```
-
-### How It Works
-
-1. Workflow reads the last commit message.
-2. Determines bump type (or skips).
-3. Runs `npm version <patch|minor|major>` which:
-   - Updates `package.json` version.
-   - Creates a commit and tag `v<version>`.
-4. Pushes commit & tag.
-5. Publishes to npm (`npm publish`).
-
-### Manual Release (Override)
-
-If you need to force a release for a commit that wouldn't trigger it:
-
-1. Create a new commit on main with an appropriate message (e.g. `fix: trigger release` or `feat!: force major`).
-2. Push. The workflow will process it.
-
-### Notes
-
-- Only the HEAD commit is considered (squash merge recommended). If you merge multiple commits, ensure the final one has the correct prefix.
-- Use `!` for any breaking change in `feat` or `fix` commits, or add a `BREAKING CHANGE:` footer line.
-- Ensure `NPM_TOKEN` repository secret is set for publishing.
-
-### Future Enhancements (not yet implemented)
-
-- Aggregate multiple commits since last release.
-- Generate GitHub Releases / changelog.
-- Support additional types (e.g. `perf`, `refactor`).
-
-Contributions to extend release automation are welcome.
