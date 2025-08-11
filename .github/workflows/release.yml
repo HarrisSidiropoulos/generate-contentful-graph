@@ -45,7 +45,6 @@ jobs:
             echo "(Commit body present, scanning for BREAKING CHANGE)"
           fi
 
-          # Major bump if feat! or fix! (optionally feat(<any chars>)! allowing spaces) OR if body contains BREAKING CHANGE:
           if echo "$SUBJECT" | grep -Eq '^(feat|fix)(\(.*\))?!'; then
             BUMP="major"
           elif [[ "$SUBJECT" == feat!* || "$SUBJECT" == fix!* ]]; then
