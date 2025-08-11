@@ -44,20 +44,18 @@ jobs:
           if [[ "$COMMIT_RAW" == *$'\n'* ]]; then
             echo "(Commit body present, scanning for BREAKING CHANGE)"
           fi
-
-          if echo "$SUBJECT" | grep -Eq '^(feat|fix)(\(.*\))?!'; then
+          # Determine bump (major > minor > patch) based on Conventional Commit style subject / body
+          if grep -q "^BREAKING CHANGE:" <<< "$COMMIT_RAW"; then
             BUMP="major"
-          elif [[ "$SUBJECT" == feat!* || "$SUBJECT" == fix!* ]]; then
+          elif echo "$SUBJECT" | grep -Eq '^(feat|fix)(\(.*\))?!|^(feat|fix)!'; then
+            # feat(scope)! / fix(scope)! / feat! / fix! (scope may include spaces)
             BUMP="major"
-          elif grep -q "^BREAKING CHANGE:" <<< "$COMMIT_RAW"; then
-            BUMP="major"
-          elif [[ "$SUBJECT" == feat* ]]; then
+          elif echo "$SUBJECT" | grep -Eq '^feat(\(|:)' ; then
             BUMP="minor"
-          elif [[ "$SUBJECT" == fix* ]]; then
+          elif echo "$SUBJECT" | grep -Eq '^fix(\(|:)' ; then
             BUMP="patch"
           else
             echo "No semantic release trigger found (feat, fix, feat!, fix!, BREAKING CHANGE). Skipping release."
-            # Intentionally NOT setting bump output.
             exit 0
           fi
 
