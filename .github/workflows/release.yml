@@ -69,6 +69,8 @@ jobs:
           npm version ${{ steps.semver.outputs.bump }} -m "chore(release): %s [skip ci]"
           git push
           git push --tags
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish to npm
         if: steps.semver.outputs.bump
