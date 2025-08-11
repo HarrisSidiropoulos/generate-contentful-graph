@@ -53,17 +53,21 @@ jobs:
           elif [[ "$SUBJECT" =~ ^fix ]]; then
             BUMP="patch"
           else
-            BUMP="patch"
+            echo "No semantic release trigger found (feat, fix, feat!, fix!, BREAKING CHANGE). Skipping release."
+            # Intentionally NOT setting bump output.
+            exit 0
           fi
 
           echo "Bump type: $BUMP"
           echo "bump=$BUMP" >> $GITHUB_OUTPUT
 
       - name: Bump version
+        if: steps.semver.outputs.bump
         run: |
           npm version ${{ steps.semver.outputs.bump }} -m "chore(release): %s [skip ci]"
           git push
           git push --tags
 
       - name: Publish to npm
+        if: steps.semver.outputs.bump
         run: npm publish
