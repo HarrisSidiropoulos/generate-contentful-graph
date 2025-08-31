@@ -39,9 +39,7 @@ jobs:
             echo "(Commit body present, scanning for BREAKING CHANGE)"
           fi
           # Determine bump (major > minor > patch) based on Conventional Commit style subject / body
-          if echo "$SUBJECT" | grep -Eq '^refactor(\(|:)' ; then
-            BUMP="major"
-          elif echo "$SUBJECT" | grep -Eq '^(feat|fix)(\(.*\))?!|^(feat|fix)!'; then
+          if echo "$SUBJECT" | grep -Eq '^(feat|fix)(\(.*\))?!|^(feat|fix)!'; then
             # feat(scope)! / fix(scope)! / feat! / fix! (scope may include spaces)
             BUMP="major"
           elif echo "$SUBJECT" | grep -Eq '^feat(\(|:)' ; then
@@ -49,7 +47,7 @@ jobs:
           elif echo "$SUBJECT" | grep -Eq '^fix(\(|:)' ; then
             BUMP="patch"
           else
-            echo "No semantic release trigger found (feat, fix, feat!, fix!, BREAKING CHANGE). Skipping release."
+            echo "No semantic release trigger found (feat, fix, feat!, fix!). Skipping release."
             exit 0
           fi
 

@@ -33,18 +33,16 @@ The release logic inspects ONLY the latest commit on `main`:
 
 Commit prefix / pattern -> Bump type:
 
-- `refactor:` / `refactor(scope):` -> major
 - `feat!:` or `feat(scope)!:` -> major
 - `fix!:` or `fix(scope)!:` -> major
 - `feat:` / `feat(scope):` -> minor
 - `fix:` / `fix(scope):` -> patch
 
-If the last commit subject does not start with `feat`, `fix`, or their breaking variants, and there's no `BREAKING CHANGE:` line, the workflow skips versioning & publish.
+If the last commit subject does not start with `feat`, `fix`, or their breaking variants the workflow skips versioning & publish.
 
 ### Examples
 
 ```
-refactor: output format changed   => major
 feat: add color legend            =>  minor bump (x.Y.z)
 feat(parser)!: rewrite to support locales => major bump (X.y.z)
 fix: correct null handling        =>  patch bump (x.y.Z)
