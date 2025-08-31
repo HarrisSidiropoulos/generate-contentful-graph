@@ -39,7 +39,7 @@ jobs:
             echo "(Commit body present, scanning for BREAKING CHANGE)"
           fi
           # Determine bump (major > minor > patch) based on Conventional Commit style subject / body
-          if grep -q "^BREAKING CHANGE:" <<< "$COMMIT_RAW"; then
+          if echo "$SUBJECT" | grep -Eq '^refactor(\(|:)' ; then
             BUMP="major"
           elif echo "$SUBJECT" | grep -Eq '^(feat|fix)(\(.*\))?!|^(feat|fix)!'; then
             # feat(scope)! / fix(scope)! / feat! / fix! (scope may include spaces)

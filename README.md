@@ -44,12 +44,12 @@ If the last commit subject does not start with `feat`, `fix`, or their breaking 
 ### Examples
 
 ```
+refactor: output format changed   => major
 feat: add color legend            =>  minor bump (x.Y.z)
 feat(parser)!: rewrite to support locales => major bump (X.y.z)
 fix: correct null handling        =>  patch bump (x.y.Z)
 fix(api)!: remove deprecated endpoint => major
 chore: update docs                =>  no release
-
-Commit body including:
-BREAKING CHANGE: output format changed => major
+docs: readme/typo fix             =>  no release
+ci: update CI configuration       =>  no release
 ```
