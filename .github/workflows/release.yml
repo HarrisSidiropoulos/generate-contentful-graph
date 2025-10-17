@@ -1,4 +1,4 @@
-name: Release from Commit
+name: Release
 
 on:
   push:
@@ -7,15 +7,28 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
   id-token: write
 
 jobs:
-  release:
+  release-please:
     runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+    steps:
+      - uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          release-type: node
+
+  publish:
+    needs: release-please
+    runs-on: ubuntu-latest
+    if: ${{ needs.release-please.outputs.release_created }}
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
@@ -23,54 +36,8 @@ jobs:
           registry-url: "https://registry.npmjs.org"
           cache: "npm"
 
-      - name: Configure git author
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          echo "Configured git author:" && git config user.name && git config user.email
-
-      - name: Detect semver bump type
-        id: semver
-        run: |
-          COMMIT_RAW=$(git log -1 --pretty=%B)
-          SUBJECT=$(echo "$COMMIT_RAW" | head -n1)
-          echo "Last commit subject: $SUBJECT"
-          if [[ "$COMMIT_RAW" == *$'\n'* ]]; then
-            echo "(Commit body present, scanning for BREAKING CHANGE)"
-          fi
-          # Determine bump (major > minor > patch) based on Conventional Commit style subject / body
-          if echo "$SUBJECT" | grep -Eq '^(feat|fix)(\(.*\))?!|^(feat|fix)!'; then
-            # feat(scope)! / fix(scope)! / feat! / fix! (scope may include spaces)
-            BUMP="major"
-          elif echo "$SUBJECT" | grep -Eq '^feat(\(|:)' ; then
-            BUMP="minor"
-          elif echo "$SUBJECT" | grep -Eq '^fix(\(|:)' ; then
-            BUMP="patch"
-          else
-            echo "No semantic release trigger found (feat, fix, feat!, fix!). Skipping release."
-            exit 0
-          fi
-
-          echo "Bump type: $BUMP"
-          echo "bump=$BUMP" >> $GITHUB_OUTPUT
-
-      - name: Use latest npm
-        if: steps.semver.outputs.bump
-        run: npm i -g npm@latest
-
       - name: Install dependencies
-        if: steps.semver.outputs.bump
         run: npm ci
 
-      - name: Bump version
-        if: steps.semver.outputs.bump
-        run: |
-          npm version ${{ steps.semver.outputs.bump }} -m "chore(release): %s [skip ci]"
-          git push
-          git push --tags
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Publish to npm
-        if: steps.semver.outputs.bump
         run: npm publish

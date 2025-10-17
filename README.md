@@ -23,31 +23,48 @@ Alternatively, you can use Graphviz's command-line tools to transform it into an
 SPACE_ID={CONTENTFUL_SPACE_ID} ENVIRONMENT={CONTENTFUL_ENVIRONMENT_ID} CONTENT_DELIVERY_ACCESS_TOKEN={CONTENTFUL_CONTENT_DELIVERY_API_ACCESS_TOKEN} npx generate-contentful-graph | dot -Tsvg -o diagram.svg
 ```
 
-## Releasing (Semantic Versioning)
+## Releasing (Automated with Release Please)
 
-The project uses an automated GitHub Actions workflow to bump the npm package version and publish on pushes to the `main` branch when the latest commit message follows certain Conventional Commit prefixes.
+The project uses [Release Please](https://github.com/googleapis/release-please) to automate releases and semantic versioning. This provides a more robust release process with automatic changelog generation and better conventional commit support.
 
-### Triggers
+### How it works
 
-The release logic inspects ONLY the latest commit on `main`:
+1. **Conventional Commits**: When you push commits to `main` that follow [Conventional Commits](https://www.conventionalcommits.org/), Release Please will automatically create or update a release pull request.
 
-Commit prefix / pattern -> Bump type:
+2. **Release PR**: The release PR will:
 
-- `feat!:` or `feat(scope)!:` -> major
-- `fix!:` or `fix(scope)!:` -> major
-- `feat:` / `feat(scope):` -> minor
-- `fix:` / `fix(scope):` -> patch
+   - Update the version in `package.json` based on the conventional commits
+   - Generate or update the `CHANGELOG.md` with all changes since the last release
+   - Show exactly what will be released
 
-If the last commit subject does not start with `feat`, `fix`, or their breaking variants the workflow skips versioning & publish.
+3. **Automatic Publishing**: When you merge the release PR, the package will be automatically published to npm.
 
-### Examples
+### Conventional Commit Examples
 
 ```
-feat: add color legend            =>  minor bump (x.Y.z)
-feat(parser)!: rewrite to support locales => major bump (X.y.z)
-fix: correct null handling        =>  patch bump (x.y.Z)
-fix(api)!: remove deprecated endpoint => major
-chore: update docs                =>  no release
-docs: readme/typo fix             =>  no release
-ci: update CI configuration       =>  no release
+feat: add color legend                    =>  minor bump (x.Y.z)
+feat(parser): rewrite to support locale   =>  minor bump (x.Y.z)
+feat!: rewrite parser with breaking API   =>  major bump (X.y.z)
+feat(api)!: change response format        =>  major bump (X.y.z)
+fix: correct null handling                =>  patch bump (x.y.Z)
+fix(parser): handle locale edge cases     =>  patch bump (x.y.Z)
+fix!: remove deprecated endpoint          =>  major bump (X.y.z)
+chore: update documentation               =>  no release
+chore(deps): update dependencies          =>  no release
+docs: fix typo in README                  =>  no release
+
+# Breaking changes can also be indicated in the body:
+feat(parser): add locale support
+
+BREAKING CHANGE: This changes the output format
 ```
+
+### Release Process
+
+1. Make changes using conventional commit messages
+2. Push to `main` branch
+3. Release Please will create/update a release PR automatically
+4. Review the generated changelog and version bump in the PR
+5. Merge the release PR to trigger the actual release and npm publish
+
+No manual version bumping or changelog maintenance required!
