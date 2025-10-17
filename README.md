@@ -4,6 +4,8 @@ This Node.js script generates a Graphviz diagram of the relationships between Co
 
 ## Installation
 
+Install globally via npm:
+
 ```bash
 npm install -g generate-contentful-graph
 ```

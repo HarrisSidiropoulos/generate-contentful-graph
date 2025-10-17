@@ -2,7 +2,12 @@
   "release-type": "node",
   "packages": {
     ".": {
-      "package-name": "generate-contentful-graph"
+      "package-name": "generate-contentful-graph",
+      "changelog-sections": [
+        { "type": "feat", "section": "Features" },
+        { "type": "fix", "section": "Bug Fixes" },
+        { "type": "chore", "hidden": true }
+      ]
     }
   }
 }
