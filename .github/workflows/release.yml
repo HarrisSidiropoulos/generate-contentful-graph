@@ -27,7 +27,9 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
-          skip-github-pull-request: true
+          # Temporarily disabled skip-github-pull-request to bootstrap releases
+          # Once the first release PR is merged, you can re-enable this option
+          # skip-github-pull-request: true
 
       - name: Debug release-please outputs
         run: |
@@ -38,7 +40,7 @@ jobs:
   publish:
     needs: release-please
     runs-on: ubuntu-latest
-    # if: ${{ needs.release-please.outputs.release_created }} # Temporarily disabled for testing
+    if: ${{ needs.release-please.outputs.release_created }}
     steps:
       - uses: actions/checkout@v4
 
