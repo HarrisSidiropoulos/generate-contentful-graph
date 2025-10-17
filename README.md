@@ -12,7 +12,7 @@ npm install -g generate-contentful-graph
 
 ## Usage
 
-To run the script, open your terminal or command prompt and navigate to the project directory. Then, run the following command:
+To run the script, set your Contentful credentials as environment variables and execute the command:
 
 ```bash
 SPACE_ID={CONTENTFUL_SPACE_ID} ENVIRONMENT={CONTENTFUL_ENVIRONMENT_ID} CONTENT_DELIVERY_ACCESS_TOKEN={CONTENTFUL_CONTENT_DELIVERY_API_ACCESS_TOKEN} npx generate-contentful-graph
