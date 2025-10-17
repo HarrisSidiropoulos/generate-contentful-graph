@@ -2,6 +2,12 @@
 
 This Node.js script generates a Graphviz diagram of the relationships between Contentful content types, based on their fields and links to other content types.
 
+## Installation
+
+```bash
+npm install -g generate-contentful-graph
+```
+
 ## Usage
 
 To run the script, open your terminal or command prompt and navigate to the project directory. Then, run the following command:
