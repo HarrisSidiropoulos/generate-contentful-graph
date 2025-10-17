@@ -49,6 +49,7 @@ jobs:
           echo "Release created: ${{ steps.release.outputs.release_created }}"
           echo "Tag name: ${{ steps.release.outputs.tag_name }}"
           echo "Changelog: ${{ steps.release.outputs.changelog }}"
+          echo "Version: ${{ steps.release.outputs.version }}"
 
       # Step 2: Commit version bump & tag
       - name: Commit and tag new version
