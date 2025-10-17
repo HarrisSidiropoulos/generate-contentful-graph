@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.1](https://github.com/HarrisSidiropoulos/generate-contentful-graph/compare/generate-contentful-graph-v4.0.0...generate-contentful-graph-v4.0.1) (2025-10-17)
+
+
+### Bug Fixes
+
+* revert version number to 3.0.0 in package.json and package-lock.json ([382f6d8](https://github.com/HarrisSidiropoulos/generate-contentful-graph/commit/382f6d8b325588e9264966db378866ffe6b2e197))
+
 ## [4.0.0](https://github.com/HarrisSidiropoulos/generate-contentful-graph/compare/generate-contentful-graph-v3.0.0...generate-contentful-graph-v4.0.0) (2025-10-17)
 
 ### ⚠ BREAKING CHANGES
