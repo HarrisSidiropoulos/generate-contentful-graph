@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.1](https://github.com/HarrisSidiropoulos/generate-contentful-graph/compare/generate-contentful-graph-v4.0.0...generate-contentful-graph-v4.0.1) (2025-10-17)
+
+
+### Bug Fixes
+
+* update Node.js setup to use version from .nvmrc ([89ab112](https://github.com/HarrisSidiropoulos/generate-contentful-graph/commit/89ab11226cbb114ebc4cb2e929500e487073213c))
+
 ## [4.0.0](https://github.com/HarrisSidiropoulos/generate-contentful-graph/compare/generate-contentful-graph-v3.0.0...generate-contentful-graph-v4.0.0) (2025-10-17)
 
 
