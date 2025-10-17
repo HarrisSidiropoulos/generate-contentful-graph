@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.2](https://github.com/HarrisSidiropoulos/generate-contentful-graph/compare/generate-contentful-graph-v4.0.1...generate-contentful-graph-v4.0.2) (2025-10-17)
+
+
+### Bug Fixes
+
+* remove unused color from color palette in generateColor function ([bcc0fd7](https://github.com/HarrisSidiropoulos/generate-contentful-graph/commit/bcc0fd7793a4bf001b82f7f91ee7e7a7811ced35))
+
 ## [4.0.1](https://github.com/HarrisSidiropoulos/generate-contentful-graph/compare/generate-contentful-graph-v4.0.0...generate-contentful-graph-v4.0.1) (2025-10-17)
 
 
