@@ -1,6 +1,6 @@
 # Changelog
 
-## [3.0.0](https://github.com/HarrisSidiropoulos/generate-contentful-graph/compare/generate-contentful-graph-v3.0.0...generate-contentful-graph-v4.0.0) (2025-10-17)
+## [4.0.0](https://github.com/HarrisSidiropoulos/generate-contentful-graph/compare/generate-contentful-graph-v3.0.0...generate-contentful-graph-v4.0.0) (2025-10-17)
 
 ### ⚠ BREAKING CHANGES
 
