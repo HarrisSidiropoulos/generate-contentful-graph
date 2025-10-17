@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.0.3](https://github.com/HarrisSidiropoulos/generate-contentful-graph/compare/generate-contentful-graph-v4.0.2...generate-contentful-graph-v4.0.3) (2025-10-17)
+
+
+### Bug Fixes
+
+* correct release-please configuration by ensuring packages section is properly formatted ([4f04363](https://github.com/HarrisSidiropoulos/generate-contentful-graph/commit/4f043634e89a9dbca6507b7883b89204b64febff))
+* simplify release-please configuration by removing empty packages section ([316527d](https://github.com/HarrisSidiropoulos/generate-contentful-graph/commit/316527d355a9771a0289e7bd717ab3ec23af0602))
+
 ## [4.0.2](https://github.com/HarrisSidiropoulos/generate-contentful-graph/compare/generate-contentful-graph-v4.0.1...generate-contentful-graph-v4.0.2) (2025-10-17)
 
 
