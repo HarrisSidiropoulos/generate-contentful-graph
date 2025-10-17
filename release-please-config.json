@@ -1,9 +1,9 @@
 {
-  "release-type": "node",
-  "include-component-in-tag": true,
   "packages": {
     ".": {
+      "release-type": "node",
       "package-name": "generate-contentful-graph",
+      "include-component-in-tag": false,
       "changelog-sections": [
         { "type": "feat", "section": "Features" },
         { "type": "fix", "section": "Bug Fixes" },
