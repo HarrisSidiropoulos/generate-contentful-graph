@@ -41,15 +41,7 @@ jobs:
         with:
           config-file: .release-please-config.json
           manifest-file: .release-please-manifest.json
-          skip-github-pull-request: true
           token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Debug release-please outputs
-        run: |
-          echo "Release created: ${{ steps.release.outputs.release_created }}"
-          echo "Tag name: ${{ steps.release.outputs.tag_name }}"
-          echo "Changelog: ${{ steps.release.outputs.changelog }}"
-          echo "Version: ${{ steps.release.outputs.version }}"
 
       # Step 2: Commit version bump & tag
       - name: Commit and tag new version
@@ -59,9 +51,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           git add .
-          git commit -m "chore(release): ${{
-            steps.release.outputs.tag_name
-          }}" || echo "No changes to commit"
+          git commit -m "chore(release): ${{ steps.release.outputs.tag_name }}" || echo "No changes to commit"
 
           git tag ${{ steps.release.outputs.tag_name }}
           git push origin main --follow-tags
