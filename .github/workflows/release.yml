@@ -23,7 +23,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version-file: ".nvmrc"
           registry-url: "https://registry.npmjs.org/"
           # Use OIDC auth (no NPM_TOKEN needed if you enable OIDC in npm)
           # Remove the line below if you still prefer using NPM_TOKEN:
