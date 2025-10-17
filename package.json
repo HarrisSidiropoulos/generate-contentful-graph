@@ -1,6 +1,6 @@
 {
   "name": "generate-contentful-graph",
-  "version": "3.0.0",
+  "version": "4.0.1",
   "description": "Contentful Content Type Dependency Graph",
   "main": "index.js",
   "repository": {
