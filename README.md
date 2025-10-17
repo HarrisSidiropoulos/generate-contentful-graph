@@ -18,6 +18,8 @@ To run the script, set your Contentful credentials as environment variables and 
 SPACE_ID={CONTENTFUL_SPACE_ID} ENVIRONMENT={CONTENTFUL_ENVIRONMENT_ID} CONTENT_DELIVERY_ACCESS_TOKEN={CONTENTFUL_CONTENT_DELIVERY_API_ACCESS_TOKEN} npx generate-contentful-graph
 ```
 
+> **Tip**: You can also use a `.env` file to store your credentials. The script will automatically load environment variables from a `.env` file in your project root.
+
 The script will retrieve the content types from your Contentful space and environment, examine their fields and links, and produce a Graphviz diagram in DOT format. The DOT output will be displayed in the console.
 
 You can save the DOT output to a file by redirecting it to a file, like so:
