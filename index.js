@@ -42,7 +42,6 @@ function generateColor(index = 0) {
     "#ffd8b1",
     "#000075",
     "#a9a9a9",
-    "#000000",
   ];
   return colors[index % colors.length];
 }
