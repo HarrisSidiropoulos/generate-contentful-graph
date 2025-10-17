@@ -12,67 +12,61 @@ permissions:
 jobs:
   release:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          node-version-file: ".nvmrc"
-          registry-url: "https://registry.npmjs.org"
-          cache: "npm"
+          node-version: 20
+          registry-url: "https://registry.npmjs.org/"
+          # Use OIDC auth (no NPM_TOKEN needed if you enable OIDC in npm)
+          # Remove the line below if you still prefer using NPM_TOKEN:
+          always-auth: true
 
-      - name: Configure git author
+      # Step 1: Run release-please (no PR)
+      - name: Run release-please
+        id: release
+        uses: googleapis/release-please-action@v4
+        with:
+          release-type: node
+          skip-github-pull-request: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # Step 2: Commit version bump & tag
+      - name: Commit and tag new version
+        if: ${{ steps.release.outputs.release_created }}
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          echo "Configured git author:" && git config user.name && git config user.email
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Detect semver bump type
-        id: semver
-        run: |
-          COMMIT_RAW=$(git log -1 --pretty=%B)
-          SUBJECT=$(echo "$COMMIT_RAW" | head -n1)
-          echo "Last commit subject: $SUBJECT"
-          if [[ "$COMMIT_RAW" == *$'\n'* ]]; then
-            echo "(Commit body present, scanning for BREAKING CHANGE)"
-          fi
-          # Determine bump (major > minor > patch) based on Conventional Commit style subject / body
-          if echo "$SUBJECT" | grep -Eq '^refactor(\(|:)' ; then
-            BUMP="major"
-          elif echo "$SUBJECT" | grep -Eq '^(feat|fix)(\(.*\))?!|^(feat|fix)!'; then
-            # feat(scope)! / fix(scope)! / feat! / fix! (scope may include spaces)
-            BUMP="major"
-          elif echo "$SUBJECT" | grep -Eq '^feat(\(|:)' ; then
-            BUMP="minor"
-          elif echo "$SUBJECT" | grep -Eq '^fix(\(|:)' ; then
-            BUMP="patch"
-          else
-            echo "No semantic release trigger found (feat, fix, feat!, fix!, BREAKING CHANGE). Skipping release."
-            exit 0
-          fi
+          git add .
+          git commit -m "chore(release): ${{
+            steps.release.outputs.tag_name
+          }}" || echo "No changes to commit"
 
-          echo "Bump type: $BUMP"
-          echo "bump=$BUMP" >> $GITHUB_OUTPUT
+          git tag ${{ steps.release.outputs.tag_name }}
+          git push origin main --follow-tags
 
-      - name: Use latest npm
-        if: steps.semver.outputs.bump
-        run: npm i -g npm@latest
-
-      - name: Install dependencies
-        if: steps.semver.outputs.bump
-        run: npm ci
-
-      - name: Bump version
-        if: steps.semver.outputs.bump
-        run: |
-          npm version ${{ steps.semver.outputs.bump }} -m "chore(release): %s [skip ci]"
-          git push
-          git push --tags
+      # Step 3: Create GitHub Release
+      - name: Create GitHub Release
+        if: ${{ steps.release.outputs.release_created }}
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.release.outputs.tag_name }}
+          name: Release ${{ steps.release.outputs.tag_name }}
+          body: ${{ steps.release.outputs.changelog }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      # Step 4: Publish to npm automatically
       - name: Publish to npm
-        if: steps.semver.outputs.bump
-        run: npm publish
+        if: ${{ steps.release.outputs.release_created }}
+        run: |
+          npm i -g npm@latest
+          npm ci
+          npm publish
