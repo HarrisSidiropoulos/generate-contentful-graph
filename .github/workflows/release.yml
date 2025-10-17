@@ -29,10 +29,16 @@ jobs:
           manifest-file: .release-please-manifest.json
           skip-github-pull-request: true
 
+      - name: Debug release-please outputs
+        run: |
+          echo "release_created: '${{ steps.release.outputs.release_created }}'"
+          echo "tag_name: '${{ steps.release.outputs.tag_name }}'"
+          echo "All outputs: ${{ toJson(steps.release.outputs) }}"
+
   publish:
     needs: release-please
     runs-on: ubuntu-latest
-    if: ${{ needs.release-please.outputs.release_created }}
+    # if: ${{ needs.release-please.outputs.release_created }} # Temporarily disabled for testing
     steps:
       - uses: actions/checkout@v4
 
